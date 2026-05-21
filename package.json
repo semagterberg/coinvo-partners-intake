@@ -5,9 +5,9 @@
   "description": "Coinvo partnership intake landing page",
   "type": "module",
   "scripts": {
-    "build": "echo \"Static intake page ready\""
+    "build": "mkdir -p public && cp index.html public/index.html"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": "20.x"
   }
 }
