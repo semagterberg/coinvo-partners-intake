@@ -1,0 +1,13 @@
+{
+  "name": "coinvo-partners-intake",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Coinvo partnership intake landing page",
+  "type": "module",
+  "scripts": {
+    "build": "echo \"Static intake page ready\""
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
