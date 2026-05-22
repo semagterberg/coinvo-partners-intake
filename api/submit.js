@@ -15,8 +15,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         parent: {
-          type: 'data_source_id',
-          data_source_id: process.env.NOTION_DATA_SOURCE_ID
+          database_id: process.env.NOTION_DATA_SOURCE_ID
         },
         properties: {
           Applicant: {
