@@ -1,5 +1,6 @@
-const text = (value) => [{ text: { content: String(value || '') } }];
-const select = (value) => value ? { name: String(value) } : null;
+const richText = (value) => [{ text: { content: String(value || '') } }];
+const selectValue = (value) => value ? { name: String(value).replace(' · Most picked', '').replace(' · Best for launches', '').trim() } : null;
+const dateValue = (value) => value ? { start: String(value) } : null;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -9,52 +10,53 @@ export default async function handler(req, res) {
   try {
     const body = req.body || {};
     const submittedAt = body.submitted_at || new Date().toISOString();
+    const applicationId = body.id || `coinvo-${Date.now()}`;
 
     const properties = {
       Applicant: {
-        title: text(body.project_name || 'New submission')
+        title: richText(body.project_name || 'New submission')
       },
       'Project Name': {
-        rich_text: text(body.project_name)
+        rich_text: richText(body.project_name)
       },
       'Website or X Link': {
         url: body.website_or_x_link || null
       },
       'Campaign Type': {
-        select: select(body.campaign_type)
+        select: selectValue(body.campaign_type)
       },
       'Budget Range': {
-        select: select(body.budget_range)
+        select: selectValue(body.budget_range)
       },
       'Payment Type': {
-        select: select(body.payment_type)
+        select: selectValue(body.payment_type)
       },
       'Primary Goal': {
-        select: select(body.primary_goal)
+        select: selectValue(body.primary_goal)
       },
-      'Telegram or Email': {
-        rich_text: text(body.telegram_or_email)
-      },
-      'First Name': {
-        rich_text: text(body.first_name)
-      },
-      'Notes': {
-        rich_text: text(body.campaign_context)
+      'Campaign Context': {
+        rich_text: richText(body.campaign_context)
       },
       'Expected Outcome': {
-        rich_text: text(body.expected_outcome)
+        rich_text: richText(body.expected_outcome)
+      },
+      'Telegram or Email': {
+        rich_text: richText(body.telegram_or_email)
+      },
+      'First Name': {
+        rich_text: richText(body.first_name)
       },
       'Application ID': {
-        rich_text: text(body.id || `coinvo-${Date.now()}`)
+        rich_text: richText(applicationId)
       },
       'Submitted At': {
-        date: { start: submittedAt }
+        date: dateValue(submittedAt)
       },
       'Status': {
         status: { name: 'Not started' }
       },
       'Source': {
-        select: select(body.source || 'Coinvo Partnership Intake')
+        rich_text: richText(body.source || 'Coinvo Partnership Intake')
       },
       'Follow Up Needed': {
         checkbox: true
@@ -65,7 +67,7 @@ export default async function handler(req, res) {
     };
 
     if (body.launch_date) {
-      properties['Launch Date'] = { date: { start: body.launch_date } };
+      properties['Launch Date'] = { date: dateValue(body.launch_date) };
     }
 
     const notionResponse = await fetch('https://api.notion.com/v1/pages', {
