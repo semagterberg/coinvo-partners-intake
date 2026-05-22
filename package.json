@@ -5,7 +5,7 @@
   "description": "Coinvo partnership intake landing page",
   "type": "module",
   "scripts": {
-    "build": "mkdir -p public && cp index.html public/index.html"
+    "build": "node build.mjs"
   },
   "engines": {
     "node": "20.x"
