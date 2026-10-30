@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         date: dateValue(submittedAt)
       },
       'Status': {
-        status: { name: 'Not started' }
+        status: { name: 'New lead' }
       },
       'Source': {
         rich_text: richText(body.source || 'Coinvo Partnership Intake')
